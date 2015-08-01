@@ -245,71 +245,111 @@ begin
 
    obtenerFecha:=  formateado;
 end;
-//Procedimiento para Obtener el Codigo de Barras
-procedure obtenerCodigo();
+//funcion que obtiene el numero binario de un numero decimal
+function n2bin(numero:Integer):String;
 var
-   ndec: integer;
    wh: Char;
+   nbinario: String;
+begin
+     nbinario:='';
+     repeat
+           begin
+                if numero mod 2 = 0 then
+                    begin
+                         wh:='0';
+                    end
+                else
+                    begin
+                         wh:='1';
+                    end;
+                         nbinario:= nbinario + wh ;
+                         numero:= numero div 2 ;
+           end;
+     until numero = 0;
+     n2bin:=nbinario;
+end;
+
+//Procedimiento para Obtener el Codigo de Barras
+procedure obtenerCodigoBarras(legajo:Integer);
+var
    nbin: String;
    codigo: String;
    fecha:string;
    aux:string;
    dverif: integer;
+   ndec: integer;
 
           begin
                nbin:='';
                codigo:='';
-               writeln('Ingrese el N. de Legajo(4 digitos)');
-               readln(ndec);
-               // Bucle principal
-               fecha:=obtenerFecha();
-               writeln('Fecha:',fecha);
-               aux:=Concat(IntToStr(ndec), fecha );
-               writeln(aux);
-               dverif:= obtenerDigitoVerificador(aux);
-               aux:=Concat(aux, IntToStr(dverif));
-               ndec:=StrToInt(aux);
-               repeat
-                     begin
-                          if ndec mod 2 = 0 then
-                             begin
-                                  wh:='0';
-                             end
-                          else
-                              begin
-                                   wh:='1';
-                              end;
-                          nbin:= nbin + wh ;
-                          ndec:= ndec div 2 ;
-                     end;
-               until ndec = 0;
+               ndec:=legajo;
+               // Incio el proceso para obtener el codigo de barras
+               fecha:=obtenerFecha();   //obtengo la fecha como un string fomateado ddmmyyyy
+               aux:=Concat(IntToStr(ndec), fecha ); //concateno las variables
+
+               dverif:= obtenerDigitoVerificador(aux); //obtengo el codigo verificador
+               aux:=Concat(aux, IntToStr(dverif)); // concateno las variables en un string
+               ndec:=StrToInt(aux); //convierto el dato auxiliar String en Integer
+               nbin:=n2bin(ndec);//genero el numero binario del decimal
                // genero el codigo de barras
                codigo:= generarCodigo(nbin);
+               gotoxy(31,8);
+               write(aux);
+               gotoxy(2,10);
                writeln('Codigo de Barras:  ');
+               gotoxy(3,11);
                writeln(codigo);
+               gotoxy(3,12);
                writeln(codigo);
 end;
-procedure generadorCodigoBarras();
-var opcion: integer;
+//Este procedimiento se encarga de dibujar en la pantalla un rectangulo donde
+// aparecera el codigo de barras y ademas obtendra en codigo.
+procedure generadorCodigoBarras(legajo:Integer);
          begin
-           repeat
-                 opcion:=0;
-                 clrscr;
                  writeln('╔═══════════════════════════════════════════════════════════╗');
-                 writeln('║Generador de Codigo de Barras para legajos de 4 Digitos    ║');
-                 writeln('║Opciones:                                                  ║');
-                 writeln('║            1 - Generar Nuevo Codigo                       ║');
-                 writeln('║            2 - Para Volver al menu Principal presione S   ║');
+                 writeln('║Codigo de Barras del Legajo:                               ║');
+                 writeln('║                                                           ║ ');
+                 writeln('║                                                           ║ ');
+                 writeln('║                                                           ║ ');
+                 writeln('║                                                           ║ ');
+                 writeln('║                                                           ║ ');
+                 writeln('║                                                           ║ ');
+                 writeln('║                                                           ║ ');
                  writeln('╚═══════════════════════════════════════════════════════════╝');
-                 readln(opcion);
-                 if opcion=1 then
-                    begin
-                         obtenerCodigo();
-                         readln(opcion);
-                    end;
-           until opcion=2;
+                 obtenerCodigoBarras(legajo);
          end;
 // Aqui terminalel generador de codigo de barras  -------------------------------
+procedure generadorCodigodeLegajos();
+var
+   legajo:Integer;
+   opcion:integer;
+begin
+     repeat
+           clrscr;
+           writeln('╔═══════════════════════════════════════════════════════════╗');
+           writeln('║ Ingrese el N. de Legajo(4 digitos)                        ║');
+           write('║Legajo: ');
+           gotoxy(63,3);write('║');
+           gotoxy(1,4);
+           writeln('╚═══════════════════════════════════════════════════════════╝');
+           gotoxy(10,3);
+           read(legajo);
+           gotoxy(1,7);
+           //genero el codigo de barras
+           generadorCodigoBarras(legajo);
+           //genero el codigo qr.....
+           //generarCodigoQR(legajo)
+          gotoxy(1,17);
+          writeln('                                                             ');
+          writeln('                                                             ');
+          writeln('╔═══════════════════════════════════════════════════════════╗');
+          writeln('║Desea generar otro codigo?                                 ║');
+          writeln('║1- Generar Otro Codigo de Legajo                           ║');
+          writeln('║2- Volver al Menu Principal                                ║');
+          writeln('╚═══════════════════════════════════════════════════════════╝');
+          readln(opcion);
+     until opcion = 2;
+end;
 
 //Aqui Comienza el Indocumentado Codigo QR
 procedure generarCodigoQR();
@@ -457,9 +497,8 @@ begin
      writeln('║             Bienvenido al TP 2                ║');
      writeln('║                                               ║');
      writeln('║             1) Jugar Tateti                   ║');
-     writeln('║             2) Generar Codigo de Barras       ║');
-     writeln('║             3) Generar Codigo QR              ║');
-     writeln('║             4) Salir                          ║');
+     writeln('║             2) Generar Codigo de Legajos      ║');
+     writeln('║             3) Salir                          ║');
      writeln('╚═══════════════════════════════════════════════╝');
 end;
 // Aqui comienza la aplicación principal con el menu de opciones.
@@ -470,9 +509,8 @@ begin
           readln(opcionmenu);
           case opcionmenu of
                    1: tateti();
-                   2: generadorCodigoBarras();
-                   3: generarCodigoQR();
+                   2: generadorCodigodeLegajos();
           end;
-     until opcionmenu = 4;
+     until opcionmenu = 3;
           presentacionAutores();
 end.
