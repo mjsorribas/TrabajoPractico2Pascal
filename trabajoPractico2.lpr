@@ -318,12 +318,147 @@ procedure generadorCodigoBarras(legajo:Integer);
                  writeln('╚═══════════════════════════════════════════════════════════╝');
                  obtenerCodigoBarras(legajo);
          end;
+// Funcion que convierte numeros decimales enteros a binario para qr
+function decimal_a_binario ( numero : longint ):string;
+var
+   aux1,aux2 : longint;
+   contador, contadorAux: byte;
+   V_escritura: array [0..30] of integer;
+   binario:string;
+begin
+	contador:= 1;
+        binario:='';
+	while numero > 0 do
+
+	begin
+		aux1 := numero div 2;
+		aux2 := numero mod 2;
+		numero := aux1;
+		V_escritura[contador] := aux2;
+		contador:=contador+1;
+	end;
+
+	contadorAux := contador-1;
+
+	repeat
+		begin
+			binario:= concat(binario,(InttoStr(V_escritura[contadorAux])));
+			contadorAux:= contadorAux-1;
+		end;
+	until contadorAux=0;
+        decimal_a_binario:=  binario;
+end;
+
+
+//Aqui Comienza el Indocumentado Codigo QR
+procedure obtenerCodigoQr(legajo:Integer);
+var
+        ndec: integer;
+        wh: char;
+        nbin: string;
+        aux: string;
+        cantch: integer;//cantidad de caracteres
+        x: integer; //posicion X
+        y: integer; // posicion Y
+        I:integer; //para el primer for
+        Z:integer; // para el segundo for
+        valid: boolean;
+        datos: string;
+        //posicion:array[1..21,1..21]of Integer;
+        auxch: integer;
+        show:integer;
+begin
+     ndec := legajo;
+     aux:= IntToStr(ndec);
+     cantch:=length(aux);
+     x:= 17;
+     y:= 21;
+     I:=1;
+     Z:=1;
+     show:=55;
+     //gotoxy(1,46);
+     //writeln('Cantidad:',cantch,' legajo:',aux);
+     //for I:=1 to 4 do;
+     repeat
+         begin
+              auxch:=StrToInt(aux[I]);
+              datos:= decimal_a_binario(auxch);
+              // verifico que tenga los 4 digitos en binario
+              //gotoxy(1,(show-4));
+              //write(datos);
+
+              if length(datos)=1 then datos:=concat('000',datos);
+              if length(datos)=2 then datos:=concat('00',datos);
+              if length(datos)=3 then datos:=concat('0',datos);
+              //le agrego el 3 en binario adelante de cada numero para llenar los 8bits
+              datos:=concat('0011',datos) ;
+              //show:=show+1;
+              //gotoxy(1,show);
+              //write('Muestro Datos: ', datos,' largo:', length(datos),' Aux:',auxch,' show:',show, ' aux-I:',aux[I]);
+              valid:= True;
+              for Z:=1 to 8 do;
+                  begin
+                       if valid then
+                          begin
+                                x:=x+1;
+                                //posicion[x,y] :=StrToInt(datos[z]);
+                                valid:= false;
+                                gotoxy((x+5),(y+21));
+                                write(datos[z]);
+                          end
+                       else
+                           begin
+                                y:= y-1;
+                                //posicion[x,y] :=StrToInt(datos[z]);
+                                valid:= true;
+                                gotoxy((x+5),(y+21));
+                                write(datos[z]);
+                           end;
+                  end;
+              I:= I + 1;
+         end;
+     until I = 5;
+end;
+//procedimiento simple para dibujar donde ira el QR
+procedure generadorCodigoQr(legajo:Integer);
+          begin
+               gotoxy(1,20);
+               writeln('╔═══════════════════════════╗');
+               writeln('║CODIGO QR :',legajo,'        ║');
+               writeln('║═══════════════════════════║');
+               writeln('║                           ║');
+               writeln('║                           ║');
+               writeln('║                           ║');
+               writeln('║                           ║');
+               writeln('║                           ║');
+               writeln('║                           ║');
+               writeln('║                           ║');
+               writeln('║                           ║');
+               writeln('║                           ║');
+               writeln('║                           ║');
+               writeln('║                           ║');
+               writeln('║                           ║');
+               writeln('║                           ║');
+               writeln('║                           ║');
+               writeln('║                           ║');
+               writeln('║ #######                   ║');
+               writeln('║ #     #                   ║');
+               writeln('║ # ### #                   ║');
+               writeln('║ # ### #                   ║');
+               writeln('║ #     #                   ║');
+               writeln('║ #######                   ║');
+               writeln('║                           ║');
+               writeln('╚═══════════════════════════╝');
+               obtenerCodigoQr(legajo);
+end;
+
+
 // Aqui terminalel generador de codigo de barras  -------------------------------
 procedure generadorCodigodeLegajos();
 var
    legajo:Integer;
    opcion:integer;
-begin
+   begin
      repeat
            clrscr;
            writeln('╔═══════════════════════════════════════════════════════════╗');
@@ -337,157 +472,25 @@ begin
            gotoxy(1,7);
            //genero el codigo de barras
            generadorCodigoBarras(legajo);
-           //genero el codigo qr.....
-           //generarCodigoQR(legajo)
-          gotoxy(1,17);
-          writeln('                                                             ');
-          writeln('                                                             ');
-          writeln('╔═══════════════════════════════════════════════════════════╗');
-          writeln('║Desea generar otro codigo?                                 ║');
-          writeln('║1- Generar Otro Codigo de Legajo                           ║');
-          writeln('║2- Volver al Menu Principal                                ║');
-          writeln('╚═══════════════════════════════════════════════════════════╝');
-          readln(opcion);
+           //genero el codigo qr
+           gotoxy(1,16);
+           generadorCodigoQr(legajo);
+           gotoxy(70,20);
+           write('╔════════════════════════════════════╗');
+           gotoxy(70,21);
+           write('║Desea generar otro codigo?          ║');
+           gotoxy(70,22);
+           write('║1- Generar Otro Codigo de Legajo    ║');
+           gotoxy(70,23);
+           write('║2- Volver al Menu Principal         ║');
+           gotoxy(70,24);
+           write('╚════════════════════════════════════╝');
+           gotoxy(70,25);
+           write('Ingrese la opcion: ');
+           gotoxy(90,25);
+           read(opcion);
      until opcion = 2;
-end;
-
-//Aqui Comienza el Indocumentado Codigo QR
-procedure generarCodigoQR();
-var
-        z: char;
-        i: integer;
-        k: integer;
-        q: integer;
-        r: integer;
-        a: integer;
-        t: integer;
-        c: array [1..21, 1..21] of integer;
-        n: array [1..4] of integer;
-        b: array [1..9, 1..4] of integer;
-        g: array [1..21, 1..21] of char;
-
-begin
-          for i:=1 to 9 do
-           for k:=1 to 4 do
-             begin
-              b[i,k]:=0;
-             end;
-          b[1,4]:=1;
-          b[2,3]:=1;
-          b[3,3]:=1;
-          b[3,4]:=1;
-          b[4,2]:=1;
-          b[5,2]:=1;
-          b[5,4]:=1;
-          b[6,2]:=1;
-          b[6,3]:=1;
-          b[7,2]:=1;
-          b[7,3]:=1;
-          b[7,4]:=1;
-          b[8,1]:=1;
-          b[9,1]:=1;
-          b[9,4]:=1;
-          for q:= 1 to 21 do
-            for r:= 1 to 21 do
-              c[q,r]:=0;
-          for a:= 1 to 8 do
-           begin
-            c[1,a]:=1;
-            c[a,1]:=1;
-            c[8,a]:=1;
-            c[a,8]:=1;
-            c[14,a]:=1;
-            c[a,14]:=1;
-            c[21,a]:=1;
-            c[a,21]:=1;
-            c[1,a+13]:=1;
-            c[a+13,1]:=1;
-            c[8,a+13]:=1;
-            c[a+13,8]:=1;
-           end;
-          for a:= 1 to 5 do
-           begin
-            c[a+8,7]:=1;
-            c[7,a+8]:=1;
-           end;
-          for a:= 3 to 6 do
-           begin
-            c[a,3]:=1;
-            c[a,4]:=1;
-            c[a,5]:=1;
-            c[a,6]:=1;
-            c[a+13,3]:=1;
-            c[a+13,4]:=1;
-            c[a+13,5]:=1;
-            c[a+13,6]:=1;
-            c[a,16]:=1;
-            c[a,17]:=1;
-            c[a,18]:=1;
-            c[a,19]:=1;
-           end;
-          for a:= 20 to 21 do
-           begin
-            c[19,a]:=1;
-            c[15,a]:=1;
-            c[11,a]:=1;
-            c[11,a-2]:=1;
-           end;
-          for k:= 1 to 4 do
-           begin
-            writeln('Ingrese un digito del legajo y presione enter');
-            readln(n[k]);
-           end;
-          for k:= 1 to 4 do
-           begin
-            t:=n[k];
-            if t<>0 then
-             begin
-              case k of
-               1: begin
-                   c[20,20]:=b[t,2];
-                   c[20,21]:=b[t,1];
-                   c[21,20]:=b[t,4];
-                   c[21,21]:=b[t,3];
-                  end;
-               2: begin
-                   c[16,20]:=b[t,2];
-                   c[16,21]:=b[t,1];
-                   c[17,20]:=b[t,4];
-                   c[17,21]:=b[t,3];
-                  end;
-               3: begin
-                   c[12,20]:=b[t,2];
-                   c[12,21]:=b[t,1];
-                   c[13,20]:=b[t,4];
-                   c[13,21]:=b[t,3];
-                  end;
-               4: begin
-                   c[12,18]:=b[t,2];
-                   c[12,19]:=b[t,1];
-                   c[13,18]:=b[t,4];
-                   c[13,19]:=b[t,3];
-                  end;
-              end;
-             end;
-           end;
-          for q:= 1 to 21 do
-           begin
-            for r:= 1 to 21 do
-              write(c[q,r]:2);
-              writeln;
-           end;
-          writeln;
-          for q:= 1 to 21 do
-           begin
-            for r:= 1 to 21 do
-             if c[q,r]=0 then write(chr(255)) else write(chr(219));
-             writeln;
-           end;
-          writeln ('Para finalizar presione enter');
-          readln (z);
-          clrscr;
-
-end;
+   end;
 //------------------------------------------------------------------------------
 //procedimiento que muestra el menu
 procedure menu();
