@@ -197,8 +197,8 @@ end;
 
 //funcion para calcular el Digito de Control EAN (numero):integer;
 function obtenerDigitoVerificador (Ean: String): Integer; overload;
-//Calcula y devuelve el dÃ­gito verificador de una cadena de cÃ³digo de barras EAN13
-//o EAN8 .Devcuelve -1 en caso de ser incorrecto.
+//Calcula y devuelve el di­gito verificador de una cadena de codigo de barras EAN13
+//o EAN8 .Devuelve -1 en caso de ser incorrecto.
 var
   SP, SI, I, L:Integer;
   Impar: Boolean;
@@ -232,8 +232,8 @@ function obtenerFecha():String;
 var YY,MM,DD : Word;
      formateado : string;
 begin
-   DeCodeDate (Date,YY,MM,DD);
-   formateado := (format('%d%d%d',[dd,mm,yy]));
+   DeCodeDate (Date,YY,MM,DD); // este metodo permite desglosar una fecha
+   formateado := (format('%d%d%d',[dd,mm,yy])); // con este metodo formateamos la fecha como queremos
    //agrego las condiciones para evitar que la fecha tenga menos digitos y le
    //agrego un 0 extra para validar los 13 de ean 13
    if (length(formateado)= 8) then
@@ -292,15 +292,15 @@ var
                ndec:=StrToInt(aux); //convierto el dato auxiliar String en Integer
                nbin:=n2bin(ndec);//genero el numero binario del decimal
                // genero el codigo de barras
-               codigo:= generarCodigo(nbin);
+               codigo:= generarCodigo(nbin); //genero el codigo y lo guardo en variable
                gotoxy(31,7);
                write(aux);
                gotoxy(2,9);
                writeln('Codigo de Barras:  ');
                gotoxy(3,10);
-               writeln(codigo);
+               writeln(codigo); //muestro el codigo
                gotoxy(3,11);
-               writeln(codigo);
+               writeln(codigo); //muestro el codigo x segunda vez para que sea + grande
 end;
 //Este procedimiento se encarga de dibujar en la pantalla un rectangulo donde
 // aparecera el codigo de barras y ademas obtendra en codigo.
