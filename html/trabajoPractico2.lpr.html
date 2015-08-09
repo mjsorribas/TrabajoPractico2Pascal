@@ -252,209 +252,260 @@
 
    </font>obtenerFecha<font color="#FF0000">:=  </font>formateado<font color="#FF0000">;
 </font><b>end</b><font color="#FF0000">;
-</font><font color="#0000FF"><b>//Procedimiento para Obtener el Codigo de Barras
-</b></font><b>procedure </b>obtenerCodigo<font color="#FF0000">();
+</font><font color="#0000FF"><b>//funcion que obtiene el numero binario de un numero decimal
+</b></font><b>function </b>n2bin<font color="#FF0000">(</font>numero<font color="#FF0000">:</font>Integer<font color="#FF0000">):</font><b>String</b><font color="#FF0000">;
 </font><b>var
-   </b>ndec<font color="#FF0000">: </font>integer<font color="#FF0000">;
-   </font>wh<font color="#FF0000">: </font>Char<font color="#FF0000">;
-   </font>nbin<font color="#FF0000">: </font><b>String</b><font color="#FF0000">;
+   </b>wh<font color="#FF0000">: </font>Char<font color="#FF0000">;
+   </font>nbinario<font color="#FF0000">: </font><b>String</b><font color="#FF0000">;
+</font><b>begin
+     </b>nbinario<font color="#FF0000">:=</font><font color="#0000FF">''</font><font color="#FF0000">;
+     </font><b>repeat
+           begin
+                if </b>numero <b>mod </b><font color="#000080">2 </font><font color="#FF0000">= </font><font color="#000080">0 </font><b>then
+                    begin
+                         </b>wh<font color="#FF0000">:=</font><font color="#0000FF">'0'</font><font color="#FF0000">;
+                    </font><b>end
+                else
+                    begin
+                         </b>wh<font color="#FF0000">:=</font><font color="#0000FF">'1'</font><font color="#FF0000">;
+                    </font><b>end</b><font color="#FF0000">;
+                         </font>nbinario<font color="#FF0000">:= </font>nbinario <font color="#FF0000">+ </font>wh <font color="#FF0000">;
+                         </font>numero<font color="#FF0000">:= </font>numero <b>div </b><font color="#000080">2 </font><font color="#FF0000">;
+           </font><b>end</b><font color="#FF0000">;
+     </font><b>until </b>numero <font color="#FF0000">= </font><font color="#000080">0</font><font color="#FF0000">;
+     </font>n2bin<font color="#FF0000">:=</font>nbinario<font color="#FF0000">;
+</font><b>end</b><font color="#FF0000">;
+
+</font><font color="#0000FF"><b>//Procedimiento para Obtener el Codigo de Barras
+</b></font><b>procedure </b>obtenerCodigoBarras<font color="#FF0000">(</font>legajo<font color="#FF0000">:</font>Integer<font color="#FF0000">);
+</font><b>var
+   </b>nbin<font color="#FF0000">: </font><b>String</b><font color="#FF0000">;
    </font>codigo<font color="#FF0000">: </font><b>String</b><font color="#FF0000">;
    </font>fecha<font color="#FF0000">:</font><b>string</b><font color="#FF0000">;
    </font>aux<font color="#FF0000">:</font><b>string</b><font color="#FF0000">;
    </font>dverif<font color="#FF0000">: </font>integer<font color="#FF0000">;
+   </font>ndec<font color="#FF0000">: </font>integer<font color="#FF0000">;
 
           </font><b>begin
                </b>nbin<font color="#FF0000">:=</font><font color="#0000FF">''</font><font color="#FF0000">;
                </font>codigo<font color="#FF0000">:=</font><font color="#0000FF">''</font><font color="#FF0000">;
-               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'Ingrese el N. de Legajo(4 digitos)'</font><font color="#FF0000">);
-               </font>readln<font color="#FF0000">(</font>ndec<font color="#FF0000">);
-               </font><font color="#0000FF"><b>// Bucle principal
-               </b></font>fecha<font color="#FF0000">:=</font>obtenerFecha<font color="#FF0000">();
-               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'Fecha:'</font><font color="#FF0000">,</font>fecha<font color="#FF0000">);
-               </font>aux<font color="#FF0000">:=</font>Concat<font color="#FF0000">(</font>IntToStr<font color="#FF0000">(</font>ndec<font color="#FF0000">), </font>fecha <font color="#FF0000">);
-               </font>writeln<font color="#FF0000">(</font>aux<font color="#FF0000">);
-               </font>dverif<font color="#FF0000">:= </font>obtenerDigitoVerificador<font color="#FF0000">(</font>aux<font color="#FF0000">);
-               </font>aux<font color="#FF0000">:=</font>Concat<font color="#FF0000">(</font>aux<font color="#FF0000">, </font>IntToStr<font color="#FF0000">(</font>dverif<font color="#FF0000">));
-               </font>ndec<font color="#FF0000">:=</font>StrToInt<font color="#FF0000">(</font>aux<font color="#FF0000">);
-               </font><b>repeat
-                     begin
-                          if </b>ndec <b>mod </b><font color="#000080">2 </font><font color="#FF0000">= </font><font color="#000080">0 </font><b>then
-                             begin
-                                  </b>wh<font color="#FF0000">:=</font><font color="#0000FF">'0'</font><font color="#FF0000">;
-                             </font><b>end
-                          else
-                              begin
-                                   </b>wh<font color="#FF0000">:=</font><font color="#0000FF">'1'</font><font color="#FF0000">;
-                              </font><b>end</b><font color="#FF0000">;
-                          </font>nbin<font color="#FF0000">:= </font>nbin <font color="#FF0000">+ </font>wh <font color="#FF0000">;
-                          </font>ndec<font color="#FF0000">:= </font>ndec <b>div </b><font color="#000080">2 </font><font color="#FF0000">;
-                     </font><b>end</b><font color="#FF0000">;
-               </font><b>until </b>ndec <font color="#FF0000">= </font><font color="#000080">0</font><font color="#FF0000">;
-               </font><font color="#0000FF"><b>// genero el codigo de barras
+               </font>ndec<font color="#FF0000">:=</font>legajo<font color="#FF0000">;
+               </font><font color="#0000FF"><b>// Incio el proceso para obtener el codigo de barras
+               </b></font>fecha<font color="#FF0000">:=</font>obtenerFecha<font color="#FF0000">();   </font><font color="#0000FF"><b>//obtengo la fecha como un string fomateado ddmmyyyy
+               </b></font>aux<font color="#FF0000">:=</font>Concat<font color="#FF0000">(</font>IntToStr<font color="#FF0000">(</font>ndec<font color="#FF0000">), </font>fecha <font color="#FF0000">); </font><font color="#0000FF"><b>//concateno las variables
+
+               </b></font>dverif<font color="#FF0000">:= </font>obtenerDigitoVerificador<font color="#FF0000">(</font>aux<font color="#FF0000">); </font><font color="#0000FF"><b>//obtengo el codigo verificador
+               </b></font>aux<font color="#FF0000">:=</font>Concat<font color="#FF0000">(</font>aux<font color="#FF0000">, </font>IntToStr<font color="#FF0000">(</font>dverif<font color="#FF0000">)); </font><font color="#0000FF"><b>// concateno las variables en un string
+               </b></font>ndec<font color="#FF0000">:=</font>StrToInt<font color="#FF0000">(</font>aux<font color="#FF0000">); </font><font color="#0000FF"><b>//convierto el dato auxiliar String en Integer
+               </b></font>nbin<font color="#FF0000">:=</font>n2bin<font color="#FF0000">(</font>ndec<font color="#FF0000">);</font><font color="#0000FF"><b>//genero el numero binario del decimal
+               // genero el codigo de barras
                </b></font>codigo<font color="#FF0000">:= </font>generarCodigo<font color="#FF0000">(</font>nbin<font color="#FF0000">);
+               </font>gotoxy<font color="#FF0000">(</font><font color="#000080">31</font><font color="#FF0000">,</font><font color="#000080">7</font><font color="#FF0000">);
+               </font>write<font color="#FF0000">(</font>aux<font color="#FF0000">);
+               </font>gotoxy<font color="#FF0000">(</font><font color="#000080">2</font><font color="#FF0000">,</font><font color="#000080">9</font><font color="#FF0000">);
                </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'Codigo de Barras:  '</font><font color="#FF0000">);
+               </font>gotoxy<font color="#FF0000">(</font><font color="#000080">3</font><font color="#FF0000">,</font><font color="#000080">10</font><font color="#FF0000">);
                </font>writeln<font color="#FF0000">(</font>codigo<font color="#FF0000">);
+               </font>gotoxy<font color="#FF0000">(</font><font color="#000080">3</font><font color="#FF0000">,</font><font color="#000080">11</font><font color="#FF0000">);
                </font>writeln<font color="#FF0000">(</font>codigo<font color="#FF0000">);
 </font><b>end</b><font color="#FF0000">;
-</font><b>procedure </b>generadorCodigoBarras<font color="#FF0000">();
-</font><b>var </b>opcion<font color="#FF0000">: </font>integer<font color="#FF0000">;
+</font><font color="#0000FF"><b>//Este procedimiento se encarga de dibujar en la pantalla un rectangulo donde
+// aparecera el codigo de barras y ademas obtendra en codigo.
+</b></font><b>procedure </b>generadorCodigoBarras<font color="#FF0000">(</font>legajo<font color="#FF0000">:</font>Integer<font color="#FF0000">);
          </font><b>begin
-           repeat
-                 </b>opcion<font color="#FF0000">:=</font><font color="#000080">0</font><font color="#FF0000">;
-                 </font>clrscr<font color="#FF0000">;
-                 </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•”&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•—'</font><font color="#FF0000">);
-                 </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘Generador de Codigo de Barras para legajos de 4 Digitos    &acirc;•‘'</font><font color="#FF0000">);
-                 </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘Opciones:                                                  &acirc;•‘'</font><font color="#FF0000">);
-                 </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘            1 - Generar Nuevo Codigo                       &acirc;•‘'</font><font color="#FF0000">);
-                 </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘            2 - Para Volver al menu Principal presione S   &acirc;•‘'</font><font color="#FF0000">);
-                 </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•š&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•'</font><font color="#FF0000">);
-                 </font>readln<font color="#FF0000">(</font>opcion<font color="#FF0000">);
-                 </font><b>if </b>opcion<font color="#FF0000">=</font><font color="#000080">1 </font><b>then
-                    begin
-                         </b>obtenerCodigo<font color="#FF0000">();
-                         </font>readln<font color="#FF0000">(</font>opcion<font color="#FF0000">);
-                    </font><b>end</b><font color="#FF0000">;
-           </font><b>until </b>opcion<font color="#FF0000">=</font><font color="#000080">2</font><font color="#FF0000">;
+                 </b>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•”&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•—'</font><font color="#FF0000">);
+                 </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘Codigo de Barras del Legajo:                   &acirc;•‘'</font><font color="#FF0000">);
+                 </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘                                               &acirc;•‘ '</font><font color="#FF0000">);
+                 </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘                                               &acirc;•‘ '</font><font color="#FF0000">);
+                 </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘                                               &acirc;•‘ '</font><font color="#FF0000">);
+                 </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘                                               &acirc;•‘ '</font><font color="#FF0000">);
+                 </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘                                               &acirc;•‘ '</font><font color="#FF0000">);
+                 </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•š&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•'</font><font color="#FF0000">);
+                 </font>obtenerCodigoBarras<font color="#FF0000">(</font>legajo<font color="#FF0000">);
          </font><b>end</b><font color="#FF0000">;
-</font><font color="#0000FF"><b>// Aqui terminalel generador de codigo de barras  -------------------------------
-
-//Aqui Comienza el Indocumentado Codigo QR
-</b></font><b>procedure </b>generarCodigoQR<font color="#FF0000">();
+</font><font color="#0000FF"><b>// Funcion que convierte numeros decimales enteros a binario para qr
+</b></font><b>function </b>decimal_a_binario <font color="#FF0000">( </font>numero <font color="#FF0000">: </font>longint <font color="#FF0000">):</font><b>string</b><font color="#FF0000">;
 </font><b>var
-        </b>z<font color="#FF0000">: </font>char<font color="#FF0000">;
-        </font>i<font color="#FF0000">: </font>integer<font color="#FF0000">;
-        </font>k<font color="#FF0000">: </font>integer<font color="#FF0000">;
-        </font>q<font color="#FF0000">: </font>integer<font color="#FF0000">;
-        </font>r<font color="#FF0000">: </font>integer<font color="#FF0000">;
-        </font>a<font color="#FF0000">: </font>integer<font color="#FF0000">;
-        </font>t<font color="#FF0000">: </font>integer<font color="#FF0000">;
-        </font>c<font color="#FF0000">: </font><b>array </b><font color="#FF0000">[</font><font color="#000080">1</font><font color="#FF0000">..</font><font color="#000080">21</font><font color="#FF0000">, </font><font color="#000080">1</font><font color="#FF0000">..</font><font color="#000080">21</font><font color="#FF0000">] </font><b>of </b>integer<font color="#FF0000">;
-        </font>n<font color="#FF0000">: </font><b>array </b><font color="#FF0000">[</font><font color="#000080">1</font><font color="#FF0000">..</font><font color="#000080">4</font><font color="#FF0000">] </font><b>of </b>integer<font color="#FF0000">;
-        </font>b<font color="#FF0000">: </font><b>array </b><font color="#FF0000">[</font><font color="#000080">1</font><font color="#FF0000">..</font><font color="#000080">9</font><font color="#FF0000">, </font><font color="#000080">1</font><font color="#FF0000">..</font><font color="#000080">4</font><font color="#FF0000">] </font><b>of </b>integer<font color="#FF0000">;
-        </font>g<font color="#FF0000">: </font><b>array </b><font color="#FF0000">[</font><font color="#000080">1</font><font color="#FF0000">..</font><font color="#000080">21</font><font color="#FF0000">, </font><font color="#000080">1</font><font color="#FF0000">..</font><font color="#000080">21</font><font color="#FF0000">] </font><b>of </b>char<font color="#FF0000">;
-
+   </b>aux1<font color="#FF0000">,</font>aux2 <font color="#FF0000">: </font>longint<font color="#FF0000">;
+   </font>contador<font color="#FF0000">, </font>contadorAux<font color="#FF0000">: </font>byte<font color="#FF0000">;
+   </font>V_escritura<font color="#FF0000">: </font><b>array </b><font color="#FF0000">[</font><font color="#000080">0</font><font color="#FF0000">..</font><font color="#000080">30</font><font color="#FF0000">] </font><b>of </b>integer<font color="#FF0000">;
+   </font>binario<font color="#FF0000">:</font><b>string</b><font color="#FF0000">;
 </font><b>begin
-          for </b>i<font color="#FF0000">:=</font><font color="#000080">1 </font><b>to </b><font color="#000080">9 </font><b>do
-           for </b>k<font color="#FF0000">:=</font><font color="#000080">1 </font><b>to </b><font color="#000080">4 </font><b>do
-             begin
-              </b>b<font color="#FF0000">[</font>i<font color="#FF0000">,</font>k<font color="#FF0000">]:=</font><font color="#000080">0</font><font color="#FF0000">;
-             </font><b>end</b><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">1</font><font color="#FF0000">,</font><font color="#000080">4</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">2</font><font color="#FF0000">,</font><font color="#000080">3</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">3</font><font color="#FF0000">,</font><font color="#000080">3</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">3</font><font color="#FF0000">,</font><font color="#000080">4</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">4</font><font color="#FF0000">,</font><font color="#000080">2</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">5</font><font color="#FF0000">,</font><font color="#000080">2</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">5</font><font color="#FF0000">,</font><font color="#000080">4</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">6</font><font color="#FF0000">,</font><font color="#000080">2</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">6</font><font color="#FF0000">,</font><font color="#000080">3</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">7</font><font color="#FF0000">,</font><font color="#000080">2</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">7</font><font color="#FF0000">,</font><font color="#000080">3</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">7</font><font color="#FF0000">,</font><font color="#000080">4</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">8</font><font color="#FF0000">,</font><font color="#000080">1</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">9</font><font color="#FF0000">,</font><font color="#000080">1</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font>b<font color="#FF0000">[</font><font color="#000080">9</font><font color="#FF0000">,</font><font color="#000080">4</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-          </font><b>for </b>q<font color="#FF0000">:= </font><font color="#000080">1 </font><b>to </b><font color="#000080">21 </font><b>do
-            for </b>r<font color="#FF0000">:= </font><font color="#000080">1 </font><b>to </b><font color="#000080">21 </font><b>do
-              </b>c<font color="#FF0000">[</font>q<font color="#FF0000">,</font>r<font color="#FF0000">]:=</font><font color="#000080">0</font><font color="#FF0000">;
-          </font><b>for </b>a<font color="#FF0000">:= </font><font color="#000080">1 </font><b>to </b><font color="#000080">8 </font><b>do
-           begin
-            </b>c<font color="#FF0000">[</font><font color="#000080">1</font><font color="#FF0000">,</font>a<font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">,</font><font color="#000080">1</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font><font color="#000080">8</font><font color="#FF0000">,</font>a<font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">,</font><font color="#000080">8</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font><font color="#000080">14</font><font color="#FF0000">,</font>a<font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">,</font><font color="#000080">14</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font><font color="#000080">21</font><font color="#FF0000">,</font>a<font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">,</font><font color="#000080">21</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font><font color="#000080">1</font><font color="#FF0000">,</font>a<font color="#FF0000">+</font><font color="#000080">13</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">+</font><font color="#000080">13</font><font color="#FF0000">,</font><font color="#000080">1</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font><font color="#000080">8</font><font color="#FF0000">,</font>a<font color="#FF0000">+</font><font color="#000080">13</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">+</font><font color="#000080">13</font><font color="#FF0000">,</font><font color="#000080">8</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-           </font><b>end</b><font color="#FF0000">;
-          </font><b>for </b>a<font color="#FF0000">:= </font><font color="#000080">1 </font><b>to </b><font color="#000080">5 </font><b>do
-           begin
-            </b>c<font color="#FF0000">[</font>a<font color="#FF0000">+</font><font color="#000080">8</font><font color="#FF0000">,</font><font color="#000080">7</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font><font color="#000080">7</font><font color="#FF0000">,</font>a<font color="#FF0000">+</font><font color="#000080">8</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-           </font><b>end</b><font color="#FF0000">;
-          </font><b>for </b>a<font color="#FF0000">:= </font><font color="#000080">3 </font><b>to </b><font color="#000080">6 </font><b>do
-           begin
-            </b>c<font color="#FF0000">[</font>a<font color="#FF0000">,</font><font color="#000080">3</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">,</font><font color="#000080">4</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">,</font><font color="#000080">5</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">,</font><font color="#000080">6</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">+</font><font color="#000080">13</font><font color="#FF0000">,</font><font color="#000080">3</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">+</font><font color="#000080">13</font><font color="#FF0000">,</font><font color="#000080">4</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">+</font><font color="#000080">13</font><font color="#FF0000">,</font><font color="#000080">5</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">+</font><font color="#000080">13</font><font color="#FF0000">,</font><font color="#000080">6</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">,</font><font color="#000080">16</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">,</font><font color="#000080">17</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">,</font><font color="#000080">18</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font>a<font color="#FF0000">,</font><font color="#000080">19</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-           </font><b>end</b><font color="#FF0000">;
-          </font><b>for </b>a<font color="#FF0000">:= </font><font color="#000080">20 </font><b>to </b><font color="#000080">21 </font><b>do
-           begin
-            </b>c<font color="#FF0000">[</font><font color="#000080">19</font><font color="#FF0000">,</font>a<font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font><font color="#000080">15</font><font color="#FF0000">,</font>a<font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font><font color="#000080">11</font><font color="#FF0000">,</font>a<font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-            </font>c<font color="#FF0000">[</font><font color="#000080">11</font><font color="#FF0000">,</font>a<font color="#FF0000">-</font><font color="#000080">2</font><font color="#FF0000">]:=</font><font color="#000080">1</font><font color="#FF0000">;
-           </font><b>end</b><font color="#FF0000">;
-          </font><b>for </b>k<font color="#FF0000">:= </font><font color="#000080">1 </font><b>to </b><font color="#000080">4 </font><b>do
-           begin
-            </b>writeln<font color="#FF0000">(</font><font color="#0000FF">'Ingrese un digito del legajo y presione enter'</font><font color="#FF0000">);
-            </font>readln<font color="#FF0000">(</font>n<font color="#FF0000">[</font>k<font color="#FF0000">]);
-           </font><b>end</b><font color="#FF0000">;
-          </font><b>for </b>k<font color="#FF0000">:= </font><font color="#000080">1 </font><b>to </b><font color="#000080">4 </font><b>do
-           begin
-            </b>t<font color="#FF0000">:=</font>n<font color="#FF0000">[</font>k<font color="#FF0000">];
-            </font><b>if </b>t<font color="#FF0000">&lt;&gt;</font><font color="#000080">0 </font><b>then
-             begin
-              case </b>k <b>of
-               </b><font color="#000080">1</font><font color="#FF0000">: </font><b>begin
-                   </b>c<font color="#FF0000">[</font><font color="#000080">20</font><font color="#FF0000">,</font><font color="#000080">20</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">2</font><font color="#FF0000">];
-                   </font>c<font color="#FF0000">[</font><font color="#000080">20</font><font color="#FF0000">,</font><font color="#000080">21</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">1</font><font color="#FF0000">];
-                   </font>c<font color="#FF0000">[</font><font color="#000080">21</font><font color="#FF0000">,</font><font color="#000080">20</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">4</font><font color="#FF0000">];
-                   </font>c<font color="#FF0000">[</font><font color="#000080">21</font><font color="#FF0000">,</font><font color="#000080">21</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">3</font><font color="#FF0000">];
-                  </font><b>end</b><font color="#FF0000">;
-               </font><font color="#000080">2</font><font color="#FF0000">: </font><b>begin
-                   </b>c<font color="#FF0000">[</font><font color="#000080">16</font><font color="#FF0000">,</font><font color="#000080">20</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">2</font><font color="#FF0000">];
-                   </font>c<font color="#FF0000">[</font><font color="#000080">16</font><font color="#FF0000">,</font><font color="#000080">21</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">1</font><font color="#FF0000">];
-                   </font>c<font color="#FF0000">[</font><font color="#000080">17</font><font color="#FF0000">,</font><font color="#000080">20</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">4</font><font color="#FF0000">];
-                   </font>c<font color="#FF0000">[</font><font color="#000080">17</font><font color="#FF0000">,</font><font color="#000080">21</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">3</font><font color="#FF0000">];
-                  </font><b>end</b><font color="#FF0000">;
-               </font><font color="#000080">3</font><font color="#FF0000">: </font><b>begin
-                   </b>c<font color="#FF0000">[</font><font color="#000080">12</font><font color="#FF0000">,</font><font color="#000080">20</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">2</font><font color="#FF0000">];
-                   </font>c<font color="#FF0000">[</font><font color="#000080">12</font><font color="#FF0000">,</font><font color="#000080">21</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">1</font><font color="#FF0000">];
-                   </font>c<font color="#FF0000">[</font><font color="#000080">13</font><font color="#FF0000">,</font><font color="#000080">20</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">4</font><font color="#FF0000">];
-                   </font>c<font color="#FF0000">[</font><font color="#000080">13</font><font color="#FF0000">,</font><font color="#000080">21</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">3</font><font color="#FF0000">];
-                  </font><b>end</b><font color="#FF0000">;
-               </font><font color="#000080">4</font><font color="#FF0000">: </font><b>begin
-                   </b>c<font color="#FF0000">[</font><font color="#000080">12</font><font color="#FF0000">,</font><font color="#000080">18</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">2</font><font color="#FF0000">];
-                   </font>c<font color="#FF0000">[</font><font color="#000080">12</font><font color="#FF0000">,</font><font color="#000080">19</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">1</font><font color="#FF0000">];
-                   </font>c<font color="#FF0000">[</font><font color="#000080">13</font><font color="#FF0000">,</font><font color="#000080">18</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">4</font><font color="#FF0000">];
-                   </font>c<font color="#FF0000">[</font><font color="#000080">13</font><font color="#FF0000">,</font><font color="#000080">19</font><font color="#FF0000">]:=</font>b<font color="#FF0000">[</font>t<font color="#FF0000">,</font><font color="#000080">3</font><font color="#FF0000">];
-                  </font><b>end</b><font color="#FF0000">;
-              </font><b>end</b><font color="#FF0000">;
-             </font><b>end</b><font color="#FF0000">;
-           </font><b>end</b><font color="#FF0000">;
-          </font><b>for </b>q<font color="#FF0000">:= </font><font color="#000080">1 </font><b>to </b><font color="#000080">21 </font><b>do
-           begin
-            for </b>r<font color="#FF0000">:= </font><font color="#000080">1 </font><b>to </b><font color="#000080">21 </font><b>do
-              </b>write<font color="#FF0000">(</font>c<font color="#FF0000">[</font>q<font color="#FF0000">,</font>r<font color="#FF0000">]:</font><font color="#000080">2</font><font color="#FF0000">);
-              </font>writeln<font color="#FF0000">;
-           </font><b>end</b><font color="#FF0000">;
-          </font>writeln<font color="#FF0000">;
-          </font><b>for </b>q<font color="#FF0000">:= </font><font color="#000080">1 </font><b>to </b><font color="#000080">21 </font><b>do
-           begin
-            for </b>r<font color="#FF0000">:= </font><font color="#000080">1 </font><b>to </b><font color="#000080">21 </font><b>do
-             if </b>c<font color="#FF0000">[</font>q<font color="#FF0000">,</font>r<font color="#FF0000">]=</font><font color="#000080">0 </font><b>then </b>write<font color="#FF0000">(</font>chr<font color="#FF0000">(</font><font color="#000080">255</font><font color="#FF0000">)) </font><b>else </b>write<font color="#FF0000">(</font>chr<font color="#FF0000">(</font><font color="#000080">219</font><font color="#FF0000">));
-             </font>writeln<font color="#FF0000">;
-           </font><b>end</b><font color="#FF0000">;
-          </font>writeln <font color="#FF0000">(</font><font color="#0000FF">'Para finalizar presione enter'</font><font color="#FF0000">);
-          </font>readln <font color="#FF0000">(</font>z<font color="#FF0000">);
-          </font>clrscr<font color="#FF0000">;
+</b>	contador<font color="#FF0000">:= </font><font color="#000080">1</font><font color="#FF0000">;
+        </font>binario<font color="#FF0000">:=</font><font color="#0000FF">''</font><font color="#FF0000">;
+        </font><font color="#0000FF"><b>// Inicio el bucle que convertira el numero a binario
+        </b></font><b>while </b>numero <font color="#FF0000">&gt; </font><font color="#000080">0 </font><b>do
 
+</b>	<b>begin
+</b>		aux1 <font color="#FF0000">:= </font>numero <b>div </b><font color="#000080">2</font><font color="#FF0000">;
+</font>		aux2 <font color="#FF0000">:= </font>numero <b>mod </b><font color="#000080">2</font><font color="#FF0000">;
+</font>		numero <font color="#FF0000">:= </font>aux1<font color="#FF0000">;
+</font>		V_escritura<font color="#FF0000">[</font>contador<font color="#FF0000">] := </font>aux2<font color="#FF0000">;
+</font>		contador<font color="#FF0000">:=</font>contador<font color="#FF0000">+</font><font color="#000080">1</font><font color="#FF0000">;
+</font>	<b>end</b><font color="#FF0000">;
+
+</font>	contadorAux <font color="#FF0000">:= </font>contador<font color="#FF0000">-</font><font color="#000080">1</font><font color="#FF0000">;
+        </font><font color="#0000FF"><b>//inicio el bucle que concatenara los numeros obtenidos
+</b></font>	<b>repeat
+</b>		<b>begin
+</b>			binario<font color="#FF0000">:= </font>concat<font color="#FF0000">(</font>binario<font color="#FF0000">,(</font>InttoStr<font color="#FF0000">(</font>V_escritura<font color="#FF0000">[</font>contadorAux<font color="#FF0000">])));
+</font>			contadorAux<font color="#FF0000">:= </font>contadorAux<font color="#FF0000">-</font><font color="#000080">1</font><font color="#FF0000">;
+</font>		<b>end</b><font color="#FF0000">;
+</font>	<b>until </b>contadorAux<font color="#FF0000">=</font><font color="#000080">0</font><font color="#FF0000">;
+        </font>decimal_a_binario<font color="#FF0000">:=  </font>binario<font color="#FF0000">;
 </font><b>end</b><font color="#FF0000">;
+
+</font><font color="#0000FF"><b>//Aqui Comienza el Indocumentado Codigo QR
+</b></font><b>procedure </b>obtenerCodigoQr<font color="#FF0000">(</font>legajo<font color="#FF0000">:</font>Integer<font color="#FF0000">);
+</font><b>var
+        </b>ndec<font color="#FF0000">: </font>integer<font color="#FF0000">;
+        </font>aux<font color="#FF0000">: </font><b>string</b><font color="#FF0000">;
+        </font>x<font color="#FF0000">: </font>integer<font color="#FF0000">; </font><font color="#0000FF"><b>//posicion X
+        </b></font>y<font color="#FF0000">: </font>integer<font color="#FF0000">; </font><font color="#0000FF"><b>// posicion Y
+        </b></font>I<font color="#FF0000">:</font>integer<font color="#FF0000">; </font><font color="#0000FF"><b>//para el primer for
+        </b></font>Z<font color="#FF0000">:</font>integer<font color="#FF0000">; </font><font color="#0000FF"><b>// para el segundo for
+        </b></font>datos<font color="#FF0000">: </font><b>string</b><font color="#FF0000">;
+        </font><font color="#0000FF"><b>//posicion:array[1..21,1..21]of Integer;
+        </b></font>auxch<font color="#FF0000">: </font>integer<font color="#FF0000">;
+        </font>contadorY<font color="#FF0000">: </font>integer<font color="#FF0000">;
+        </font>contadorX<font color="#FF0000">: </font>integer<font color="#FF0000">;
+</font><b>begin
+     </b>ndec <font color="#FF0000">:= </font>legajo<font color="#FF0000">; </font><font color="#0000FF"><b>//cargo el legajo en otra variable para procesarlo luego
+     </b></font>aux<font color="#FF0000">:= </font>IntToStr<font color="#FF0000">(</font>ndec<font color="#FF0000">); </font><font color="#0000FF"><b>//cnvierto el legajo en String
+     </b></font>y<font color="#FF0000">:= </font><font color="#000080">39</font><font color="#FF0000">;   </font><font color="#0000FF"><b>//seteo la poscion y en la pantalla para iniciar la carga de datos
+     </b></font>I<font color="#FF0000">:=</font><font color="#000080">1</font><font color="#FF0000">;     </font><font color="#0000FF"><b>// seteo en 1 el contador I
+     </b></font>contadorY<font color="#FF0000">:=</font><font color="#000080">0</font><font color="#FF0000">;  </font><font color="#0000FF"><b>// seteo en 0 el contador de Posicion Y-me da cuantos renglones subo
+     </b></font>contadorY<font color="#FF0000">:= </font><font color="#000080">1</font><font color="#FF0000">; </font><font color="#0000FF"><b>// seteo en 1 el contador de Posicion X -me da cuantas filas me muevo al costado izq
+     //inicio el bucle que leera todos los digitos, los convertira a binario y los colocara en pantalla en la posicion correspondiente.
+     </b></font><b>repeat
+         begin
+              </b>x<font color="#FF0000">:= </font><font color="#000080">24</font><font color="#FF0000">;
+              </font>Z<font color="#FF0000">:=</font><font color="#000080">8</font><font color="#FF0000">;
+              </font>auxch<font color="#FF0000">:=</font>StrToInt<font color="#FF0000">(</font>aux<font color="#FF0000">[</font>I<font color="#FF0000">]);
+              </font>datos<font color="#FF0000">:= </font>decimal_a_binario<font color="#FF0000">(</font>auxch<font color="#FF0000">); </font><font color="#0000FF"><b>//convierto los datos de decimal a binario
+              //chequeo que tenga todos los ceros el binario y si no se los agrego para completar
+              </b></font><b>if </b>length<font color="#FF0000">(</font>datos<font color="#FF0000">)=</font><font color="#000080">1 </font><b>then </b>datos<font color="#FF0000">:=</font>concat<font color="#FF0000">(</font><font color="#0000FF">'000'</font><font color="#FF0000">,</font>datos<font color="#FF0000">);
+              </font><b>if </b>length<font color="#FF0000">(</font>datos<font color="#FF0000">)=</font><font color="#000080">2 </font><b>then </b>datos<font color="#FF0000">:=</font>concat<font color="#FF0000">(</font><font color="#0000FF">'00'</font><font color="#FF0000">,</font>datos<font color="#FF0000">);
+              </font><b>if </b>length<font color="#FF0000">(</font>datos<font color="#FF0000">)=</font><font color="#000080">3 </font><b>then </b>datos<font color="#FF0000">:=</font>concat<font color="#FF0000">(</font><font color="#0000FF">'0'</font><font color="#FF0000">,</font>datos<font color="#FF0000">);
+              </font><font color="#0000FF"><b>//le agrego el 3 en binario adelante de cada numero para llenar los 8bits
+              </b></font>datos<font color="#FF0000">:=</font>concat<font color="#FF0000">(</font><font color="#0000FF">'0011'</font><font color="#FF0000">,</font>datos<font color="#FF0000">) ;
+              </font><font color="#0000FF"><b>//le asigno 1 al contadorX
+              </b></font>contadorX<font color="#FF0000">:=</font><font color="#000080">1</font><font color="#FF0000">;
+              </font><font color="#0000FF"><b>// inicio el bucle que recorrera los 8 caracteres del numero binario en forma invertida
+              </b></font><b>for </b>Z<font color="#FF0000">:=</font><font color="#000080">8 </font><b>downto </b><font color="#000080">0 </font><b>do
+              begin
+                       </b><font color="#0000FF"><b>//Si el contador Y es mayor o igual a 12 la posX es 22.Exclusvo para el 4 numero o D4.
+                       </b></font><b>if</b><font color="#FF0000">(</font>contadorY <font color="#FF0000">&gt;= </font><font color="#000080">12</font><font color="#FF0000">) </font><b>then
+                          begin
+                               </b>x<font color="#FF0000">:= </font><font color="#000080">22</font><font color="#FF0000">;
+                               </font><b>if</b><font color="#FF0000">(</font>Z<font color="#FF0000">=</font><font color="#000080">8</font><font color="#FF0000">)</font><b>then </b>y<font color="#FF0000">:= </font><font color="#000080">31</font><font color="#FF0000">;
+                          </font><b>end</b><font color="#FF0000">;
+                       </font><font color="#0000FF"><b>//Si el contador Y es menor o igual a 11 la posX es 24
+                       </b></font><b>if</b><font color="#FF0000">(</font>contadorY <font color="#FF0000">&lt;= </font><font color="#000080">11</font><font color="#FF0000">) </font><b>then </b>x<font color="#FF0000">:= </font><font color="#000080">24</font><font color="#FF0000">;
+                       </font><font color="#0000FF"><b>//Si el contadorX es mayor a 2 lo reseteamos a 1 y le sumamos 1 al contador Y.
+                       </b></font><b>if</b><font color="#FF0000">(</font>contadorX <font color="#FF0000">&gt; </font><font color="#000080">2</font><font color="#FF0000">) </font><b>then
+                          begin
+                               </b>y<font color="#FF0000">:= </font>y <font color="#FF0000">- </font><font color="#000080">1</font><font color="#FF0000">; </font><font color="#0000FF"><b>//subimos la pos y una posicion hacia arriba
+                               </b></font>contadorX<font color="#FF0000">:= </font><font color="#000080">1</font><font color="#FF0000">;
+                               </font>contadorY<font color="#FF0000">:= </font>contadorY <font color="#FF0000">+ </font><font color="#000080">1 </font><font color="#FF0000">;
+                          </font><b>end</b><font color="#FF0000">;
+                       </font><b>if</b><font color="#FF0000">(</font>contadorX <font color="#FF0000">= </font><font color="#000080">1</font><font color="#FF0000">) </font><b>then
+                           begin
+                                </b>x<font color="#FF0000">:=</font>x<font color="#FF0000">-</font><font color="#000080">1</font><font color="#FF0000">;   </font><font color="#0000FF"><b>//movemos pos x a la izquierda
+                           </b></font><b>end</b><font color="#FF0000">;
+                       </font><font color="#0000FF"><b>// fix para posiciones 1 de cada digito.
+                       </b></font><b>if</b><font color="#FF0000">(</font>contadorY <font color="#FF0000">=</font><font color="#000080">5</font><font color="#FF0000">) </font><b>then </b>x<font color="#FF0000">:=</font>x<font color="#FF0000">+</font><font color="#000080">1</font><font color="#FF0000">;
+                       </font><b>if</b><font color="#FF0000">(</font>contadorY <font color="#FF0000">=</font><font color="#000080">9</font><font color="#FF0000">) </font><b>then </b>x<font color="#FF0000">:=</font>x<font color="#FF0000">+</font><font color="#000080">1</font><font color="#FF0000">;
+                       </font><b>if</b><font color="#FF0000">(</font>contadorY <font color="#FF0000">=</font><font color="#000080">12</font><font color="#FF0000">) </font><b>then </b>x<font color="#FF0000">:=</font>x<font color="#FF0000">+</font><font color="#000080">1</font><font color="#FF0000">;
+                       </font><font color="#0000FF"><b>//fin fix
+                       // muevo la posicion x para mostrar correctamente el dato
+                       </b></font>x<font color="#FF0000">:=</font>x<font color="#FF0000">-</font><font color="#000080">1</font><font color="#FF0000">;
+                       </font>gotoxy<font color="#FF0000">(</font>x<font color="#FF0000">,</font>y<font color="#FF0000">);  </font><font color="#0000FF"><b>//Nos posicionamos donde queremos mostrar el N
+                       </b></font>write<font color="#FF0000">(</font>datos<font color="#FF0000">[</font>Z<font color="#FF0000">]);    </font><font color="#0000FF"><b>// mostramos en pantalla el dato correspondiente
+                       </b></font><b>if</b><font color="#FF0000">(</font>Z<font color="#FF0000">&gt;=</font><font color="#000080">1</font><font color="#FF0000">)</font><b>then </b>contadorX<font color="#FF0000">:= </font>contadorX <font color="#FF0000">+ </font><font color="#000080">1 </font><font color="#FF0000">;</font><font color="#0000FF"><b>//le sumamos 1 al contador X
+
+              </b></font><b>end</b><font color="#FF0000">;
+
+              </font>I<font color="#FF0000">:= </font>I <font color="#FF0000">+ </font><font color="#000080">1</font><font color="#FF0000">; </font><font color="#0000FF"><b>//le sumamos 1 al contador
+         </b></font><b>end</b><font color="#FF0000">;
+     </font><b>until </b>I <font color="#FF0000">= </font><font color="#000080">5</font><font color="#FF0000">;
+</font><b>end</b><font color="#FF0000">;
+</font><font color="#0000FF"><b>//procedimiento simple para dibujar donde ira el QR
+</b></font><b>procedure </b>generadorCodigoQr<font color="#FF0000">(</font>legajo<font color="#FF0000">:</font>Integer<font color="#FF0000">);
+          </font><b>begin
+               </b>gotoxy<font color="#FF0000">(</font><font color="#000080">1</font><font color="#FF0000">,</font><font color="#000080">15</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•”&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•—'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘CODIGO QR :'</font><font color="#FF0000">,</font>legajo<font color="#FF0000">,</font><font color="#0000FF">'        &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ #######       ####### &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ #     #       #     # &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ # ### #       # ### # &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ # ### #       # ### # &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ # ### #       # ### # &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ # ### #       # ### # &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ #     #       #     # &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ #######       ####### &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘                       &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘                       &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘                       &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘                       &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘                       &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘                       &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘                       &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ #######               &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ #     #               &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ # ### #               &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ # ### #               &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ # ### #               &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ #     #               &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ #######               &acirc;•‘'</font><font color="#FF0000">);
+               </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•š&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•'</font><font color="#FF0000">);
+               </font>obtenerCodigoQr<font color="#FF0000">(</font>legajo<font color="#FF0000">);
+</font><b>end</b><font color="#FF0000">;
+
+
+</font><font color="#0000FF"><b>// Aqui terminalel generador de codigo de barras  -------------------------------
+</b></font><b>procedure </b>generadorCodigodeLegajos<font color="#FF0000">();
+</font><b>var
+   </b>legajo<font color="#FF0000">:</font>Integer<font color="#FF0000">;
+   </font>opcion<font color="#FF0000">:</font>integer<font color="#FF0000">;
+   </font><b>begin
+     repeat
+           </b>clrscr<font color="#FF0000">;
+           </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•”&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•—'</font><font color="#FF0000">);
+           </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘ Ingrese el N. de Legajo(4 digitos)            &acirc;•‘'</font><font color="#FF0000">);
+           </font>write<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘Legajo: '</font><font color="#FF0000">);
+           </font>gotoxy<font color="#FF0000">(</font><font color="#000080">51</font><font color="#FF0000">,</font><font color="#000080">3</font><font color="#FF0000">);</font>write<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘'</font><font color="#FF0000">);
+           </font>gotoxy<font color="#FF0000">(</font><font color="#000080">1</font><font color="#FF0000">,</font><font color="#000080">4</font><font color="#FF0000">);
+           </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•š&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•'</font><font color="#FF0000">);
+           </font>gotoxy<font color="#FF0000">(</font><font color="#000080">10</font><font color="#FF0000">,</font><font color="#000080">3</font><font color="#FF0000">);
+           </font>read<font color="#FF0000">(</font>legajo<font color="#FF0000">);
+           </font>gotoxy<font color="#FF0000">(</font><font color="#000080">1</font><font color="#FF0000">,</font><font color="#000080">6</font><font color="#FF0000">);
+           </font><font color="#0000FF"><b>//genero el codigo de barras
+           </b></font>generadorCodigoBarras<font color="#FF0000">(</font>legajo<font color="#FF0000">);
+           </font><font color="#0000FF"><b>//genero el codigo qr
+           </b></font>gotoxy<font color="#FF0000">(</font><font color="#000080">1</font><font color="#FF0000">,</font><font color="#000080">14</font><font color="#FF0000">);
+           </font>generadorCodigoQr<font color="#FF0000">(</font>legajo<font color="#FF0000">);
+           </font>gotoxy<font color="#FF0000">(</font><font color="#000080">30</font><font color="#FF0000">,</font><font color="#000080">33</font><font color="#FF0000">);
+           </font>write<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•”&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•—'</font><font color="#FF0000">);
+           </font>gotoxy<font color="#FF0000">(</font><font color="#000080">30</font><font color="#FF0000">,</font><font color="#000080">34</font><font color="#FF0000">);
+           </font>write<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘Menu de Opciones                    &acirc;•‘'</font><font color="#FF0000">);
+           </font>gotoxy<font color="#FF0000">(</font><font color="#000080">30</font><font color="#FF0000">,</font><font color="#000080">35</font><font color="#FF0000">);
+           </font>write<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘1- Generar Otro Codigo de Legajo    &acirc;•‘'</font><font color="#FF0000">);
+           </font>gotoxy<font color="#FF0000">(</font><font color="#000080">30</font><font color="#FF0000">,</font><font color="#000080">36</font><font color="#FF0000">);
+           </font>write<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘2- Volver al Menu Principal         &acirc;•‘'</font><font color="#FF0000">);
+           </font>gotoxy<font color="#FF0000">(</font><font color="#000080">30</font><font color="#FF0000">,</font><font color="#000080">37</font><font color="#FF0000">);
+           </font>write<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•š&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•'</font><font color="#FF0000">);
+           </font>gotoxy<font color="#FF0000">(</font><font color="#000080">30</font><font color="#FF0000">,</font><font color="#000080">38</font><font color="#FF0000">);
+           </font>write<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•”&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•—'</font><font color="#FF0000">);
+           </font>gotoxy<font color="#FF0000">(</font><font color="#000080">30</font><font color="#FF0000">,</font><font color="#000080">39</font><font color="#FF0000">);
+           </font>write<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘Ingrese el numero de Opcion:        &acirc;•‘'</font><font color="#FF0000">);
+           </font>gotoxy<font color="#FF0000">(</font><font color="#000080">30</font><font color="#FF0000">,</font><font color="#000080">40</font><font color="#FF0000">);
+           </font>write<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•š&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•'</font><font color="#FF0000">);
+           </font>gotoxy<font color="#FF0000">(</font><font color="#000080">60</font><font color="#FF0000">,</font><font color="#000080">39</font><font color="#FF0000">);
+           </font>read<font color="#FF0000">(</font>opcion<font color="#FF0000">);
+     </font><b>until </b>opcion <font color="#FF0000">= </font><font color="#000080">2</font><font color="#FF0000">;
+   </font><b>end</b><font color="#FF0000">;
 </font><font color="#0000FF"><b>//------------------------------------------------------------------------------
 //procedimiento que muestra el menu
 </b></font><b>procedure </b>menu<font color="#FF0000">();
@@ -464,9 +515,8 @@
      </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘             Bienvenido al TP 2                &acirc;•‘'</font><font color="#FF0000">);
      </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘                                               &acirc;•‘'</font><font color="#FF0000">);
      </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘             1) Jugar Tateti                   &acirc;•‘'</font><font color="#FF0000">);
-     </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘             2) Generar Codigo de Barras       &acirc;•‘'</font><font color="#FF0000">);
-     </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘             3) Generar Codigo QR              &acirc;•‘'</font><font color="#FF0000">);
-     </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘             4) Salir                          &acirc;•‘'</font><font color="#FF0000">);
+     </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘             2) Generar Codigo de Legajos      &acirc;•‘'</font><font color="#FF0000">);
+     </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘             3) Salir                          &acirc;•‘'</font><font color="#FF0000">);
      </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•š&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•'</font><font color="#FF0000">);
 </font><b>end</b><font color="#FF0000">;
 </font><font color="#0000FF"><b>// Aqui comienza la aplicaci&Atilde;&sup3;n principal con el menu de opciones.
@@ -474,14 +524,18 @@
 
      repeat
           </b>menu<font color="#FF0000">();
-          </font>readln<font color="#FF0000">(</font>opcionmenu<font color="#FF0000">);
+          </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•”&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•—'</font><font color="#FF0000">);
+          </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•‘Ingrese el numero de Opcion:                   &acirc;•‘'</font><font color="#FF0000">);
+          </font>writeln<font color="#FF0000">(</font><font color="#0000FF">'&acirc;•š&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•&acirc;•'</font><font color="#FF0000">);
+          </font>gotoxy<font color="#FF0000">(</font><font color="#000080">31</font><font color="#FF0000">,</font><font color="#000080">9</font><font color="#FF0000">);
+          </font>read<font color="#FF0000">(</font>opcionmenu<font color="#FF0000">);
           </font><b>case </b>opcionmenu <b>of
                    </b><font color="#000080">1</font><font color="#FF0000">: </font>tateti<font color="#FF0000">();
-                   </font><font color="#000080">2</font><font color="#FF0000">: </font>generadorCodigoBarras<font color="#FF0000">();
-                   </font><font color="#000080">3</font><font color="#FF0000">: </font>generarCodigoQR<font color="#FF0000">();
+                   </font><font color="#000080">2</font><font color="#FF0000">: </font>generadorCodigodeLegajos<font color="#FF0000">();
           </font><b>end</b><font color="#FF0000">;
-     </font><b>until </b>opcionmenu <font color="#FF0000">= </font><font color="#000080">4</font><font color="#FF0000">;
-          </font>presentacionAutores<font color="#FF0000">();
+     </font><b>until </b>opcionmenu <font color="#FF0000">= </font><font color="#000080">3</font><font color="#FF0000">;
+           </font>gotoxy<font color="#FF0000">(</font><font color="#000080">1</font><font color="#FF0000">,</font><font color="#000080">13</font><font color="#FF0000">);
+           </font>presentacionAutores<font color="#FF0000">();
 </font><b>end</b><font color="#FF0000">.
 </font></font>
 </code></pre>
