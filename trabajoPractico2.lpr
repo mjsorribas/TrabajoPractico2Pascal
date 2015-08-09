@@ -293,29 +293,27 @@ var
                nbin:=n2bin(ndec);//genero el numero binario del decimal
                // genero el codigo de barras
                codigo:= generarCodigo(nbin);
-               gotoxy(31,8);
+               gotoxy(31,7);
                write(aux);
-               gotoxy(2,10);
+               gotoxy(2,9);
                writeln('Codigo de Barras:  ');
-               gotoxy(3,11);
+               gotoxy(3,10);
                writeln(codigo);
-               gotoxy(3,12);
+               gotoxy(3,11);
                writeln(codigo);
 end;
 //Este procedimiento se encarga de dibujar en la pantalla un rectangulo donde
 // aparecera el codigo de barras y ademas obtendra en codigo.
 procedure generadorCodigoBarras(legajo:Integer);
          begin
-                 writeln('╔═══════════════════════════════════════════════════════════╗');
-                 writeln('║Codigo de Barras del Legajo:                               ║');
-                 writeln('║                                                           ║ ');
-                 writeln('║                                                           ║ ');
-                 writeln('║                                                           ║ ');
-                 writeln('║                                                           ║ ');
-                 writeln('║                                                           ║ ');
-                 writeln('║                                                           ║ ');
-                 writeln('║                                                           ║ ');
-                 writeln('╚═══════════════════════════════════════════════════════════╝');
+                 writeln('╔═══════════════════════════════════════════════╗');
+                 writeln('║Codigo de Barras del Legajo:                   ║');
+                 writeln('║                                               ║ ');
+                 writeln('║                                               ║ ');
+                 writeln('║                                               ║ ');
+                 writeln('║                                               ║ ');
+                 writeln('║                                               ║ ');
+                 writeln('╚═══════════════════════════════════════════════╝');
                  obtenerCodigoBarras(legajo);
          end;
 // Funcion que convierte numeros decimales enteros a binario para qr
@@ -348,8 +346,19 @@ begin
 	until contadorAux=0;
         decimal_a_binario:=  binario;
 end;
-
-
+//funcion que verifica si un numero es par o no.
+// Devuelve un booleano : true o false
+function checkNumeroPar(numero:integer):boolean;
+begin
+        if (numero mod 2 = 0) Then
+           begin
+                checkNumeroPar:= true;
+           end
+        else
+            begin
+                 checkNumeroPar:= false;
+            end;
+end;
 //Aqui Comienza el Indocumentado Codigo QR
 procedure obtenerCodigoQr(legajo:Integer);
 var
@@ -367,54 +376,63 @@ var
         //posicion:array[1..21,1..21]of Integer;
         auxch: integer;
         show:integer;
+        contadorY: integer;
+        contadorX: integer;
 begin
      ndec := legajo;
      aux:= IntToStr(ndec);
      cantch:=length(aux);
-     x:= 17;
-     y:= 21;
+     y:= 39;
      I:=1;
-     Z:=1;
-     show:=55;
-     //gotoxy(1,46);
-     //writeln('Cantidad:',cantch,' legajo:',aux);
-     //for I:=1 to 4 do;
+     contadorY:=0;
+     show:=26;
+     contadorY:= 1 ;
      repeat
          begin
+              x:= 24;
+              Z:=8;
               auxch:=StrToInt(aux[I]);
               datos:= decimal_a_binario(auxch);
-              // verifico que tenga los 4 digitos en binario
-              //gotoxy(1,(show-4));
-              //write(datos);
-
+              //chequeo que tenga todos los ceros el binario
               if length(datos)=1 then datos:=concat('000',datos);
               if length(datos)=2 then datos:=concat('00',datos);
               if length(datos)=3 then datos:=concat('0',datos);
               //le agrego el 3 en binario adelante de cada numero para llenar los 8bits
               datos:=concat('0011',datos) ;
-              //show:=show+1;
-              //gotoxy(1,show);
-              //write('Muestro Datos: ', datos,' largo:', length(datos),' Aux:',auxch,' show:',show, ' aux-I:',aux[I]);
               valid:= True;
-              for Z:=1 to 8 do;
-                  begin
-                       if valid then
+              contadorX:=1;
+
+              for Z:=8 downto 0 do
+              begin
+                       //Si el numero es par y el contador Y es mayor o igual a 12 la posX es 22
+                       if(contadorY >= 12) then
                           begin
-                                x:=x+1;
-                                //posicion[x,y] :=StrToInt(datos[z]);
-                                valid:= false;
-                                gotoxy((x+5),(y+21));
-                                write(datos[z]);
-                          end
-                       else
+                               x:= 22;
+                               if(Z=8)then y:= 31;
+                          end;
+                       //Si el numero es par y el contador Y es menor o igual a 11 la posX es 24
+                       if(contadorY <= 11) then x:= 24;
+                       //Si el contadorX es mayor a 2 lo reseteamos a 1 y le sumamos 1 a el contador Y.
+                       if(contadorX > 2) then
+                          begin
+                               y:= y - 1; //subimos la pos y una posicion hacia arriba
+                               contadorX:= 1;
+                               contadorY:= contadorY + 1 ;
+                          end;
+                       if(contadorX = 1) then
                            begin
-                                y:= y-1;
-                                //posicion[x,y] :=StrToInt(datos[z]);
-                                valid:= true;
-                                gotoxy((x+5),(y+21));
-                                write(datos[z]);
+                                x:=x-1;   //movemos pos x a la izquierda
                            end;
-                  end;
+                       if(contadorY =5) then x:=x+1;
+                       if(contadorY =9) then x:=x+1;
+                       if(contadorY =12) then x:=x+1;
+                       x:=x-1;
+                       gotoxy(x,y);  //Nos pocisionamos donde queremos mostrar el N
+                       write(datos[Z]);    // mostramos en pantalla el dato correspondiente
+                       if(Z>=1)then contadorX:= contadorX + 1 ;//le sumamos 1 al contador X
+
+              end;
+
               I:= I + 1;
          end;
      until I = 5;
@@ -422,33 +440,33 @@ end;
 //procedimiento simple para dibujar donde ira el QR
 procedure generadorCodigoQr(legajo:Integer);
           begin
-               gotoxy(1,20);
-               writeln('╔═══════════════════════════╗');
+               gotoxy(1,15);
+               writeln('╔═══════════════════════╗');
                writeln('║CODIGO QR :',legajo,'        ║');
-               writeln('║═══════════════════════════║');
-               writeln('║                           ║');
-               writeln('║                           ║');
-               writeln('║                           ║');
-               writeln('║                           ║');
-               writeln('║                           ║');
-               writeln('║                           ║');
-               writeln('║                           ║');
-               writeln('║                           ║');
-               writeln('║                           ║');
-               writeln('║                           ║');
-               writeln('║                           ║');
-               writeln('║                           ║');
-               writeln('║                           ║');
-               writeln('║                           ║');
-               writeln('║                           ║');
-               writeln('║ #######                   ║');
-               writeln('║ #     #                   ║');
-               writeln('║ # ### #                   ║');
-               writeln('║ # ### #                   ║');
-               writeln('║ #     #                   ║');
-               writeln('║ #######                   ║');
-               writeln('║                           ║');
-               writeln('╚═══════════════════════════╝');
+               writeln('║═══════════════════════║');
+               writeln('║ #######       ####### ║');
+               writeln('║ #     #       #     # ║');
+               writeln('║ # ### #       # ### # ║');
+               writeln('║ # ### #       # ### # ║');
+               writeln('║ # ### #       # ### # ║');
+               writeln('║ # ### #       # ### # ║');
+               writeln('║ #     #       #     # ║');
+               writeln('║ #######       ####### ║');
+               writeln('║                       ║');
+               writeln('║                       ║');
+               writeln('║                       ║');
+               writeln('║                       ║');
+               writeln('║                       ║');
+               writeln('║                       ║');
+               writeln('║                       ║');
+               writeln('║ #######               ║');
+               writeln('║ #     #               ║');
+               writeln('║ # ### #               ║');
+               writeln('║ # ### #               ║');
+               writeln('║ # ### #               ║');
+               writeln('║ #     #               ║');
+               writeln('║ #######               ║');
+               writeln('╚═══════════════════════╝');
                obtenerCodigoQr(legajo);
 end;
 
@@ -461,33 +479,37 @@ var
    begin
      repeat
            clrscr;
-           writeln('╔═══════════════════════════════════════════════════════════╗');
-           writeln('║ Ingrese el N. de Legajo(4 digitos)                        ║');
+           writeln('╔═══════════════════════════════════════════════╗');
+           writeln('║ Ingrese el N. de Legajo(4 digitos)            ║');
            write('║Legajo: ');
-           gotoxy(63,3);write('║');
+           gotoxy(51,3);write('║');
            gotoxy(1,4);
-           writeln('╚═══════════════════════════════════════════════════════════╝');
+           writeln('╚═══════════════════════════════════════════════╝');
            gotoxy(10,3);
            read(legajo);
-           gotoxy(1,7);
+           gotoxy(1,6);
            //genero el codigo de barras
            generadorCodigoBarras(legajo);
            //genero el codigo qr
-           gotoxy(1,16);
+           gotoxy(1,14);
            generadorCodigoQr(legajo);
-           gotoxy(70,20);
+           gotoxy(30,33);
            write('╔════════════════════════════════════╗');
-           gotoxy(70,21);
-           write('║Desea generar otro codigo?          ║');
-           gotoxy(70,22);
+           gotoxy(30,34);
+           write('║Menu de Opciones                    ║');
+           gotoxy(30,35);
            write('║1- Generar Otro Codigo de Legajo    ║');
-           gotoxy(70,23);
+           gotoxy(30,36);
            write('║2- Volver al Menu Principal         ║');
-           gotoxy(70,24);
+           gotoxy(30,37);
            write('╚════════════════════════════════════╝');
-           gotoxy(70,25);
-           write('Ingrese la opcion: ');
-           gotoxy(90,25);
+           gotoxy(30,38);
+           write('╔════════════════════════════════════╗');
+           gotoxy(30,39);
+           write('║Ingrese el numero de Opcion:        ║');
+           gotoxy(30,40);
+           write('╚════════════════════════════════════╝');
+           gotoxy(60,39);
            read(opcion);
      until opcion = 2;
    end;
@@ -509,11 +531,16 @@ begin
 
      repeat
           menu();
-          readln(opcionmenu);
+          writeln('╔═══════════════════════════════════════════════╗');
+          writeln('║Ingrese el numero de Opcion:                   ║');
+          writeln('╚═══════════════════════════════════════════════╝');
+          gotoxy(31,9);
+          read(opcionmenu);
           case opcionmenu of
                    1: tateti();
                    2: generadorCodigodeLegajos();
           end;
      until opcionmenu = 3;
-          presentacionAutores();
+           gotoxy(1,13);
+           presentacionAutores();
 end.
