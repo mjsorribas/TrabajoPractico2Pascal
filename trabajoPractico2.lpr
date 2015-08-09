@@ -326,7 +326,8 @@ var
 begin
 	contador:= 1;
         binario:='';
-	while numero > 0 do
+        // Inicio el bucle que convertira el numero a binario
+        while numero > 0 do
 
 	begin
 		aux1 := numero div 2;
@@ -337,7 +338,7 @@ begin
 	end;
 
 	contadorAux := contador-1;
-
+        //inicio el bucle que concatenara los numeros obtenidos
 	repeat
 		begin
 			binario:= concat(binario,(InttoStr(V_escritura[contadorAux])));
@@ -346,73 +347,55 @@ begin
 	until contadorAux=0;
         decimal_a_binario:=  binario;
 end;
-//funcion que verifica si un numero es par o no.
-// Devuelve un booleano : true o false
-function checkNumeroPar(numero:integer):boolean;
-begin
-        if (numero mod 2 = 0) Then
-           begin
-                checkNumeroPar:= true;
-           end
-        else
-            begin
-                 checkNumeroPar:= false;
-            end;
-end;
+
 //Aqui Comienza el Indocumentado Codigo QR
 procedure obtenerCodigoQr(legajo:Integer);
 var
         ndec: integer;
-        wh: char;
-        nbin: string;
         aux: string;
-        cantch: integer;//cantidad de caracteres
         x: integer; //posicion X
         y: integer; // posicion Y
         I:integer; //para el primer for
         Z:integer; // para el segundo for
-        valid: boolean;
         datos: string;
         //posicion:array[1..21,1..21]of Integer;
         auxch: integer;
-        show:integer;
         contadorY: integer;
         contadorX: integer;
 begin
-     ndec := legajo;
-     aux:= IntToStr(ndec);
-     cantch:=length(aux);
-     y:= 39;
-     I:=1;
-     contadorY:=0;
-     show:=26;
-     contadorY:= 1 ;
+     ndec := legajo; //cargo el legajo en otra variable para procesarlo luego
+     aux:= IntToStr(ndec); //cnvierto el legajo en String
+     y:= 39;   //seteo la poscion y en la pantalla para iniciar la carga de datos
+     I:=1;     // seteo en 1 el contador I
+     contadorY:=0;  // seteo en 0 el contador de Posicion Y-me da cuantos renglones subo
+     contadorY:= 1; // seteo en 1 el contador de Posicion X -me da cuantas filas me muevo al costado izq
+     //inicio el bucle que leera todos los digitos, los convertira a binario y los colocara en pantalla en la posicion correspondiente.
      repeat
          begin
               x:= 24;
               Z:=8;
               auxch:=StrToInt(aux[I]);
-              datos:= decimal_a_binario(auxch);
-              //chequeo que tenga todos los ceros el binario
+              datos:= decimal_a_binario(auxch); //convierto los datos de decimal a binario
+              //chequeo que tenga todos los ceros el binario y si no se los agrego para completar
               if length(datos)=1 then datos:=concat('000',datos);
               if length(datos)=2 then datos:=concat('00',datos);
               if length(datos)=3 then datos:=concat('0',datos);
               //le agrego el 3 en binario adelante de cada numero para llenar los 8bits
               datos:=concat('0011',datos) ;
-              valid:= True;
+              //le asigno 1 al contadorX
               contadorX:=1;
-
+              // inicio el bucle que recorrera los 8 caracteres del numero binario en forma invertida
               for Z:=8 downto 0 do
               begin
-                       //Si el numero es par y el contador Y es mayor o igual a 12 la posX es 22
+                       //Si el contador Y es mayor o igual a 12 la posX es 22.Exclusvo para el 4 numero o D4.
                        if(contadorY >= 12) then
                           begin
                                x:= 22;
                                if(Z=8)then y:= 31;
                           end;
-                       //Si el numero es par y el contador Y es menor o igual a 11 la posX es 24
+                       //Si el contador Y es menor o igual a 11 la posX es 24
                        if(contadorY <= 11) then x:= 24;
-                       //Si el contadorX es mayor a 2 lo reseteamos a 1 y le sumamos 1 a el contador Y.
+                       //Si el contadorX es mayor a 2 lo reseteamos a 1 y le sumamos 1 al contador Y.
                        if(contadorX > 2) then
                           begin
                                y:= y - 1; //subimos la pos y una posicion hacia arriba
@@ -423,17 +406,20 @@ begin
                            begin
                                 x:=x-1;   //movemos pos x a la izquierda
                            end;
+                       // fix para posiciones 1 de cada digito.
                        if(contadorY =5) then x:=x+1;
                        if(contadorY =9) then x:=x+1;
                        if(contadorY =12) then x:=x+1;
+                       //fin fix
+                       // muevo la posicion x para mostrar correctamente el dato
                        x:=x-1;
-                       gotoxy(x,y);  //Nos pocisionamos donde queremos mostrar el N
+                       gotoxy(x,y);  //Nos posicionamos donde queremos mostrar el N
                        write(datos[Z]);    // mostramos en pantalla el dato correspondiente
                        if(Z>=1)then contadorX:= contadorX + 1 ;//le sumamos 1 al contador X
 
               end;
 
-              I:= I + 1;
+              I:= I + 1; //le sumamos 1 al contador
          end;
      until I = 5;
 end;
