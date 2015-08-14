@@ -473,6 +473,23 @@ var
            writeln('╚═══════════════════════════════════════════════╝');
            gotoxy(10,3);
            read(legajo);
+           repeat
+                 if((length(IntToStr(legajo)))>4) then
+                               begin
+                                    gotoxy(10,3);
+                                    write('               ');
+                                    gotoxy(10,3);
+                                    read(legajo);
+                               end;
+                 if((length(IntToStr(legajo)))<4) then
+                               begin
+                                    gotoxy(10,3);
+                                    write('              ');
+                                    gotoxy(10,3);
+                                    read(legajo);
+                               end;
+           until (length(IntToStr(legajo)))= 4;
+
            gotoxy(1,6);
            //genero el codigo de barras
            generadorCodigoBarras(legajo);
